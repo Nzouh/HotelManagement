@@ -26,7 +26,7 @@ VALUES
 
 (6, 1, '6th Ave, ON', 'hotel6@chain1.com', 41, 4),
 (7, 1, '7th Ave, ON', 'hotel7@chain1.com', 33, 5),
-(8, 1, '8th Ave, ON', 'hotel8@chain1.com', 39, 4)
+(8, 1, '8th Ave, ON', 'hotel8@chain1.com', 39, 4);
 
 -- Quebec locations, 9 hotels
 INSERT INTO Hotel (hotel_id, chain_id, h_address, h_email, number_rooms, rating)

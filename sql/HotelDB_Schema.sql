@@ -95,6 +95,8 @@ CREATE TABLE Booking(
     checkin VARCHAR(14),
     checkout VARCHAR(14),
     c_sin VARCHAR(9),
+    room_ID INTEGER,
+    FOREIGN KEY (room_ID) REFERENCES Room(room_ID),
     FOREIGN KEY (c_sin) REFERENCES Customer(c_sin),
     CHECK (c_sin LIKE '_________')
 );
