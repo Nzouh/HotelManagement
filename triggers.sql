@@ -1,3 +1,5 @@
+DELIMITER $$
+
 CREATE TRIGGER validate_customer_data
 BEFORE INSERT ON Customer
 FOR EACH ROW
@@ -21,7 +23,7 @@ BEGIN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'Address cannot be empty.';
     END IF;
-END;
+END$$
 
 
 CREATE TRIGGER prevent_double_renting
@@ -42,7 +44,7 @@ BEGIN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'Room is already rented during the specified dates.';
     END IF;
-END;
+END$$
 
 
 CREATE TRIGGER prevent_duplicate_room_number
@@ -57,7 +59,7 @@ BEGIN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'Duplicate room number in the same hotel.';
     END IF;
-END;
+END$$
 
 
 CREATE TRIGGER validate_employee_email
@@ -78,4 +80,6 @@ BEGIN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'Employee address cannot be empty.';
     END IF;
-END;
+END$$
+
+DELIMITER ;
