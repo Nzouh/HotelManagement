@@ -1,0 +1,4 @@
+SELECT COUNT(*) FROM Customer;
+SELECT COUNT(*) FROM Renting;
+SELECT COUNT(*) FROM Room;
+SELECT COUNT(*) FROM Employee;
