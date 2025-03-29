@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Customer Management</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <nav class="navbar">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="customers.html">Customers</a></li>
+          <li><a href="employees.html">Employees</a></li>
+          <li><a href="hotels.html">Hotels</a></li>
+          <li><a href="rooms.html">Rooms</a></li>
+          <li><a href="bookings.html">Bookings</a></li>
+          <li><a href="rentings.html">Rentings</a></li>
+          <li><a href="archives.html">Archives</a></li>
+        </ul>
+      </nav>
+      
+  <div class="container">
+    <header>
+      <h1>Customer Management</h1>
+      <div>
+        <button id="add-customer-btn">+ Add Customer</button>
+        <input type="text" id="search-customer" placeholder="Search customers..." />
+      </div>
+    </header>
+
+    <table id="customer-table">
+      <thead>
+        <tr>
+          <th>SIN</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Address</th>
+          <th>DoR</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Filled by JS -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Modal for Add/Edit -->
+  <div class="modal hidden" id="customer-form-modal">
+    <div class="modal-content">
+      <h2 id="form-title">Add Customer</h2>
+      <form id="customer-form">
+        <input type="text" id="c_sin" name="c_sin" placeholder="SIN (9 digits)" required />
+        <input type="text" id="c_name" name="c_name" placeholder="Name" required />
+        <input type="email" id="c_email" name="c_email" placeholder="Email" required />
+        <input type="text" id="c_address" name="c_address" placeholder="Address" required />
+        <input type="text" id="dor" name="dor" placeholder="Date of Registration (YYYYMMDDHHMMSS)" required />
+        <div class="modal-actions">
+          <button type="submit">Save</button>
+          <button type="button" id="cancel-btn">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <script src="customers.js"></script>
+</body>
+</html>
