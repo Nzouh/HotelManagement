@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Room Management (Employee)</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav class="navbar">
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="customers.html">Customers</a></li>
+      <li><a href="employees.html">Employees</a></li>
+      <li><a href="hotelsE.html">Hotels</a></li>
+      <li><a href="roomsE.html" class="active">Rooms</a></li>
+      <li><a href="bookings.html">Bookings</a></li>
+      <li><a href="rentings.html">Rentings</a></li>
+      <li><a href="archives.html">Archives</a></li>
+    </ul>
+  </nav>
+
+  <div class="container">
+    <header>
+      <h1>Room Management</h1>
+      <button id="add-room-btn">+ Add Room</button>
+    </header>
+
+    <!-- Filter Section -->
+    <section class="filters">
+      <label>Capacity:
+        <select id="filter-capacity">
+          <option value="">All</option>
+          <option value="Single">Single</option>
+          <option value="Double">Double</option>
+          <option value="Queen">Queen</option>
+          <option value="King">King</option>
+          <option value="Full">Full</option>
+        </select>
+      </label>
+
+      <label>View:
+        <select id="filter-view">
+          <option value="">All</option>
+          <option value="Sea">Sea</option>
+          <option value="Mountain">Mountain</option>
+          <option value="Other">Other</option>
+        </select>
+      </label>
+
+      <label>Hotel ID:
+        <input type="number" id="filter-hotel" placeholder="e.g., 24" />
+      </label>
+
+      <label>Max Price:
+        <input type="number" id="filter-price" placeholder="e.g., 200" />
+      </label>
+
+      <button id="clear-filters">Clear</button>
+    </section>
+
+    <table id="room-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Hotel ID</th>
+          <th>Room #</th>
+          <th>Capacity</th>
+          <th>View</th>
+          <th>Price</th>
+          <th>Extendable</th>
+          <th>Damages</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Filled dynamically -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal hidden" id="room-modal">
+    <div class="modal-content">
+      <h2 id="modal-title">Add Room</h2>
+      <form id="room-form">
+        <input type="number" id="room_id" name="room_id" placeholder="Room ID" required />
+        <input type="number" id="hotel_id" name="hotel_id" placeholder="Hotel ID" required />
+        <input type="number" id="room_number" name="room_number" placeholder="Room Number" required />
+        <select id="capacity" name="capacity" required>
+          <option value="">Select Capacity</option>
+          <option value="Single">Single</option>
+          <option value="Double">Double</option>
+          <option value="Queen">Queen</option>
+          <option value="King">King</option>
+          <option value="Full">Full</option>
+        </select>
+        <select id="views" name="views" required>
+          <option value="">Select View</option>
+          <option value="Sea">Sea</option>
+          <option value="Mountain">Mountain</option>
+          <option value="Other">Other</option>
+        </select>
+        <input type="number" id="price" name="price" placeholder="Price" required />
+        <input type="text" id="damages" name="damages" placeholder="Damages" />
+        <label>
+          Extendable: <input type="checkbox" id="extendable" name="extendable" />
+        </label>
+        <div class="modal-actions">
+          <button type="submit">Save</button>
+          <button type="button" id="cancel-btn">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="roomsE.js"></script>
+</body>
+</html>

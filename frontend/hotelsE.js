@@ -14,6 +14,7 @@ let editingHotelId = null;
 async function fetchHotels() {
   const res = await fetch(apiUrl);
   const hotels = await res.json();
+  hotels.sort((a, b) => a.chain_id - b.chain_id || a.hotel_id - b.hotel_id);
   renderTable(hotels);
 }
 

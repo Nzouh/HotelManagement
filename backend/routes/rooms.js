@@ -8,7 +8,7 @@ const db = require('../db.js');
  */
 router.get('/', async (req, res) => {
     try {
-      const { rows } = await db.query('SELECT * FROM Room LIMIT 10;');
+      const { rows } = await db.query('SELECT * FROM Room;');
       res.json(rows);
     } catch (err) {
       console.error('Error in GET /api/rooms:', err);
@@ -63,6 +63,63 @@ router.get('/available', async (req, res) => {
   } catch (err) {
     console.error('Error fetching available rooms:', err);
     res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+router.post('/', async (req, res) => {
+  const { hotel_id, room_number, capacity, views, price, extendable, damages } = req.body;
+
+  if (!hotel_id || !room_number || !capacity || !views || !price) {
+    return res.status(400).json({ error:err.detail || 'Missing required fields' });
+  }
+
+  try {
+    const query = `
+      INSERT INTO Room (hotel_id, room_number, capacity, views, price, extendable, damages)
+      VALUES ($1, $2, $3, $4, $5, $6, $7)
+      RETURNING *;
+    `;
+    const values = [hotel_id, room_number, capacity, views, price, extendable, damages || null];
+    const { rows } = await db.query(query, values);
+    res.status(201).json(rows[0]);
+  } catch (err) {
+    console.error('Error inserting room:', err);
+    res.status(500).json({ error: err.detail || 'Failed to insert room' });
+  }
+});
+
+router.put('/:room_id', async (req, res) => {
+  const { room_id } = req.params;
+  const { hotel_id, room_number, capacity, views, price, extendable, damages } = req.body;
+
+  try {
+    const result = await db.query(
+      `UPDATE Room 
+       SET hotel_id = $1, room_number = $2, capacity = $3, views = $4, price = $5, extendable = $6, damages = $7
+       WHERE room_id = $8 RETURNING *;`,
+      [hotel_id, room_number, capacity, views, price, extendable, damages || null, room_id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: err.detail || 'Room not found' });
+    }
+
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error('Error updating room:', err);
+    res.status(500).json({ error: 'Failed to update room' });
+  }
+});
+
+router.delete('/:room_id', async (req, res) => {
+  const { room_id } = req.params;
+
+  try {
+    await db.query('DELETE FROM Room WHERE room_id = $1', [room_id]);
+    res.sendStatus(204);
+  } catch (err) {
+    console.error('Error deleting room:', err);
+    res.status(500).json({ error:err.detail || 'Failed to delete room' });
   }
 });
 

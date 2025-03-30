@@ -68,8 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const errorData = await res.json(); // Get the error message from server
             alert(errorData.error || "Failed to save customer");
             throw new Error(errorData.error || "Failed to save customer");
-          }
-          
+          }          
         customerFormModal.classList.add("hidden");
         await fetchCustomers();
       } catch (err) {

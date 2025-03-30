@@ -1,7 +1,7 @@
-// server.js
 const express = require('express');
 const cors = require('cors');
-const db = require('./db.js'); 
+const path = require('path');
+const db = require('./db.js');
 
 const roomRoutes = require('./routes/rooms.js');
 const bookingRoutes = require('./routes/bookings.js');
@@ -14,11 +14,19 @@ const archiveRoutes = require('./routes/archives.js');
 const paymentRoutes = require('./routes/payments.js');
 const hotelCapacityRoutes = require('./routes/hotelCapacity.js');
 
-
 const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Serve static files from the 'frontend' directory
+app.use(express.static(path.join(__dirname, '..', 'frontend')));
+
+// Route handler for the root URL
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'frontend', 'index.html'));
+});
+
+// API routes
 app.use('/api/rooms', roomRoutes);
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/available-rooms', availableRoomsRoutes);
