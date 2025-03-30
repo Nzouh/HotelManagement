@@ -1,6 +1,8 @@
 // roomsE.js
 
 const apiUrl = "http://localhost:3002/api/rooms";
+const hotelCapacityUrl = "http://localhost:3002/api/hotel-capacity";
+const roomsPerAreaUrl = "http://localhost:3002/api/available-rooms-per-area";
 
 const roomTableBody = document.querySelector("#room-table tbody");
 const addRoomBtn = document.getElementById("add-room-btn");
@@ -9,11 +11,14 @@ const roomForm = document.getElementById("room-form");
 const modalTitle = document.getElementById("modal-title");
 const cancelBtn = document.getElementById("cancel-btn");
 
+const filterStart = document.getElementById("filter-start");
+const filterEnd = document.getElementById("filter-end");
 const filterCapacity = document.getElementById("filter-capacity");
 const filterView = document.getElementById("filter-view");
 const filterHotel = document.getElementById("filter-hotel");
 const filterPrice = document.getElementById("filter-price");
 const clearFiltersBtn = document.getElementById("clear-filters");
+const summaryContainer = document.getElementById("summary-container");
 
 let isEditing = false;
 let editingRoomId = null;
@@ -21,11 +26,7 @@ let editingRoomId = null;
 async function fetchRooms() {
   const res = await fetch(apiUrl);
   const rooms = await res.json();
-  rooms.sort((a, b) => a.hotel_id - b.hotel_id || a.room_number - b.room_number);
-  renderTable(rooms);
-}
 
-function renderTable(rooms) {
   const filteredRooms = rooms.filter((room) => {
     const capacityMatch = !filterCapacity.value || room.capacity === filterCapacity.value;
     const viewMatch = !filterView.value || room.views === filterView.value;
@@ -34,8 +35,13 @@ function renderTable(rooms) {
     return capacityMatch && viewMatch && hotelMatch && priceMatch;
   });
 
+  filteredRooms.sort((a, b) => a.hotel_id - b.hotel_id || a.room_number - b.room_number);
+  renderTable(filteredRooms);
+}
+
+function renderTable(rooms) {
   roomTableBody.innerHTML = "";
-  filteredRooms.forEach((r) => {
+  rooms.forEach((r) => {
     const row = document.createElement("tr");
     row.innerHTML = `
       <td>${r.room_id}</td>
@@ -124,11 +130,13 @@ function openEditModal(room) {
 }
 
 // Filters
-[filterCapacity, filterView, filterHotel, filterPrice].forEach(input => {
+[filterStart, filterEnd, filterCapacity, filterView, filterHotel, filterPrice].forEach(input => {
   input.addEventListener("input", fetchRooms);
 });
 
 clearFiltersBtn.addEventListener("click", () => {
+  filterStart.value = "";
+  filterEnd.value = "";
   filterCapacity.value = "";
   filterView.value = "";
   filterHotel.value = "";
@@ -136,4 +144,30 @@ clearFiltersBtn.addEventListener("click", () => {
   fetchRooms();
 });
 
+async function fetchSummaryData() {
+  try {
+    const [capacityRes, areaRes] = await Promise.all([
+      fetch(hotelCapacityUrl),
+      fetch(roomsPerAreaUrl)
+    ]);
+
+    const capacities = await capacityRes.json();
+    const areas = await areaRes.json();
+
+    summaryContainer.innerHTML = `
+      <h3>Hotel Capacity Summary</h3>
+      <ul>
+        ${capacities.map(h => `<li>Hotel ${h.hotel_id} (${h.h_address}): ${h.total_capacity} people</li>`).join('')}
+      </ul>
+      <h3>Available Rooms Per Area</h3>
+      <ul>
+      ${areas.map(a => `<li>${a.area} (${a.hotel_address}): ${a.available_rooms} rooms</li>`).join('')}
+      </ul>
+    `;
+  } catch (err) {
+    console.error("Error fetching summary data:", err);
+  }
+}
+
 fetchRooms();
+fetchSummaryData();

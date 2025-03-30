@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Book a Room</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="booking-container">
+    <h2>Book a Room</h2>
+    <form id="booking-form">
+      <input type="hidden" id="booking_id" />
+
+      <input type="hidden" id="room-id" />
+
+      <label for="dob">Date of Booking</label>
+      <input type="date" id="dob" readonly />
+
+      <label for="checkin">Check-in Date</label>
+      <input type="date" id="checkin" required />
+
+      <label for="checkout">Check-out Date</label>
+      <input type="date" id="checkout" required />
+
+      <label for="c_sin">Customer SIN</label>
+      <input type="text" id="c_sin" maxlength="9" pattern="\d{9}" required placeholder="Enter 9-digit SIN" />
+
+      <button type="submit">Book Now</button>
+    </form>
+  </div>
+  <script src="bookingsC.js"></script>
+</body>
+</html>

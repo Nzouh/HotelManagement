@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Employee Booking Management</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="customers.html">Customers</a></li>
+      <li><a href="employees.html">Employees</a></li>
+      <li><a href="hotelsE.html">Hotels</a></li>
+      <li><a href="roomsE.html">Rooms</a></li>
+      <li><a href="bookingsE.html" class="active">Bookings</a></li>
+      <li><a href="rentings.html">Rentings</a></li>
+      <li><a href="archives.html">Archives</a></li>
+    </ul>
+  </nav>
+
+  <div class="container">
+    <header>
+      <h1>Employee Booking Management</h1>
+      <button id="add-booking-btn">+ Add Booking</button>
+    </header>
+
+    <table id="bookings-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Customer SIN</th>
+            <th>Room ID</th>
+            <th>Booking Date</th>
+            <th>Check-in</th>
+            <th>Check-out</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      
+  </div>
+
+  <!-- Modal for add/edit booking -->
+  <div class="modal hidden" id="booking-modal">
+    <div class="modal-content">
+      <h2 id="modal-title">Add Booking</h2>
+      <form id="booking-form">
+        <input type="integer" id="booking-id" name="booking_id" placeholder="Booking ID" />
+        <input type="text" id="c_sin" name="c_sin" placeholder="Customer SIN" required />
+        <input type="integer" id="room_ID" name="room_ID" placeholder="Room ID" required />
+        <input type="date" id="dob" name="dob" placeholder="Date of Booking" required />
+        <input type="date" id="checkin" name="checkin" placeholder="Check-in" required />
+        <input type="date" id="checkout" name="checkout" placeholder="Check-out" required />
+        <div class="modal-actions">
+          <button type="submit">Save</button>
+          <button type="button" id="cancel-btn">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="bookingsE.js"></script>
+</body>
+</html>

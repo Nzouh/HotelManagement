@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Available Rooms</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav class="navbar">
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="customers.html">Customers</a></li>
+      <li><a href="employees.html">Employees</a></li>
+      <li><a href="hotelsC.html">Hotels</a></li>
+      <li><a href="roomsC.html">Rooms</a></li>
+      <li><a href="bookingsC.html">Bookings</a></li>
+      <li><a href="rentings.html">Rentings</a></li>
+      <li><a href="archives.html">Archives</a></li>
+    </ul>
+  </nav>
+
+  <div class="container">
+    <header>
+      <h1>Find Available Rooms</h1>
+    </header>
+
+    <div class="filters">
+      <label>
+        Start Date
+        <input type="date" id="filter-start" />
+      </label>
+      <label>
+        End Date
+        <input type="date" id="filter-end" />
+      </label>
+      <label>
+        Capacity
+        <select id="filter-capacity">
+          <option value="">All</option>
+          <option value="Single">Single</option>
+          <option value="Double">Double</option>
+          <option value="Full">Full</option>
+          <option value="Queen">Queen</option>
+          <option value="King">King</option>
+        </select>
+      </label>
+      <label>
+        View
+        <select id="filter-view">
+          <option value="">All</option>
+          <option value="Mountain">Mountain</option>
+          <option value="Sea">Sea</option>
+          <option value="Other">Other</option>
+        </select>
+      </label>
+      <label>
+        Max Price
+        <input type="number" id="filter-price" placeholder="e.g. 200" />
+      </label>
+      <button id="apply-filters">Apply Filters</button>
+      <button id="clear-filters">Clear</button>
+    </div>
+
+    <table id="room-table">
+      <thead>
+        <tr>
+          <th>Room ID</th>
+          <th>Hotel ID</th>
+          <th>Room #</th>
+          <th>Capacity</th>
+          <th>View</th>
+          <th>Price</th>
+          <th>Extendable</th>
+          <th>Damages</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Rendered rooms will appear here -->
+      </tbody>
+    </table>
+  </div>
+  <div id="summary-container" class="summary-box"></div>
+
+
+  <script src="roomsC.js"></script>
+</body>
+</html>

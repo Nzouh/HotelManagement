@@ -14,7 +14,7 @@
       <li><a href="employees.html">Employees</a></li>
       <li><a href="hotelsE.html">Hotels</a></li>
       <li><a href="roomsE.html" class="active">Rooms</a></li>
-      <li><a href="bookings.html">Bookings</a></li>
+      <li><a href="bookingsC.html">Bookings</a></li>
       <li><a href="rentings.html">Rentings</a></li>
       <li><a href="archives.html">Archives</a></li>
     </ul>
@@ -28,34 +28,24 @@
 
     <!-- Filter Section -->
     <section class="filters">
-      <label>Capacity:
-        <select id="filter-capacity">
-          <option value="">All</option>
-          <option value="Single">Single</option>
-          <option value="Double">Double</option>
-          <option value="Queen">Queen</option>
-          <option value="King">King</option>
-          <option value="Full">Full</option>
-        </select>
-      </label>
-
-      <label>View:
-        <select id="filter-view">
-          <option value="">All</option>
-          <option value="Sea">Sea</option>
-          <option value="Mountain">Mountain</option>
-          <option value="Other">Other</option>
-        </select>
-      </label>
-
-      <label>Hotel ID:
-        <input type="number" id="filter-hotel" placeholder="e.g., 24" />
-      </label>
-
-      <label>Max Price:
-        <input type="number" id="filter-price" placeholder="e.g., 200" />
-      </label>
-
+      <input type="date" id="filter-start" placeholder="Start Date" />
+      <input type="date" id="filter-end" placeholder="End Date" />
+      <select id="filter-capacity">
+        <option value="">All Capacities</option>
+        <option value="Single">Single</option>
+        <option value="Double">Double</option>
+        <option value="Full">Full</option>
+        <option value="Queen">Queen</option>
+        <option value="King">King</option>
+      </select>
+      <select id="filter-view">
+        <option value="">All Views</option>
+        <option value="Mountain">Mountain</option>
+        <option value="Sea">Sea</option>
+        <option value="Other">Other</option>
+      </select>
+      <input type="number" id="filter-price" placeholder="Max Price" />
+      <input type="text" id="filter-hotel" placeholder="Hotel ID" />
       <button id="clear-filters">Clear</button>
     </section>
 
@@ -113,6 +103,8 @@
       </form>
     </div>
   </div>
+  <div id="summary-container" style="margin-top: 20px;"></div>
+
 
   <script src="roomsE.js"></script>
 </body>

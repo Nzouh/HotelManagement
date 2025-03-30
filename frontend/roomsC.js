@@ -1,69 +1,99 @@
 // roomsC.js
 
-const apiUrl = "http://localhost:3002/api/available-rooms"; // Fetch from your /available-rooms route
+const apiUrl = "http://localhost:3002/api/rooms/available";
+const hotelCapacityUrl = "http://localhost:3002/api/hotel-capacity";
+const roomsPerAreaUrl = "http://localhost:3002/api/available-rooms-per-area";
 
 const roomTableBody = document.querySelector("#room-table tbody");
+const filterStart = document.getElementById("filter-start");
+const filterEnd = document.getElementById("filter-end");
 const filterCapacity = document.getElementById("filter-capacity");
 const filterView = document.getElementById("filter-view");
-const filterHotel = document.getElementById("filter-hotel");
-const filterChain = document.getElementById("filter-chain");
-const filterCategory = document.getElementById("filter-category");
-const filterNumRooms = document.getElementById("filter-num-rooms");
 const filterPrice = document.getElementById("filter-price");
-const filterStartDate = document.getElementById("filter-start-date");
-const filterEndDate = document.getElementById("filter-end-date");
+const applyFiltersBtn = document.getElementById("apply-filters");
 const clearFiltersBtn = document.getElementById("clear-filters");
+const summaryContainer = document.getElementById("summary-container");
 
-async function fetchAvailableRooms() {
+const urlParams = new URLSearchParams(window.location.search);
+const hotelIdFromURL = urlParams.get("hotel_id");
+
+async function fetchRooms() {
   const params = new URLSearchParams();
 
-  if (filterCapacity.value) params.append("capacity", filterCapacity.value);
-  if (filterView.value) params.append("area", filterView.value); // area = views in this context
-  if (filterHotel.value) params.append("hotel_id", filterHotel.value);
-  if (filterChain.value) params.append("chain_id", filterChain.value);
-  if (filterCategory.value) params.append("category", filterCategory.value);
-  if (filterNumRooms.value) params.append("number_rooms", filterNumRooms.value);
-  if (filterPrice.value) params.append("price", filterPrice.value);
-  if (filterStartDate.value) params.append("start", filterStartDate.value);
-  if (filterEndDate.value) params.append("end", filterEndDate.value);
+  if (hotelIdFromURL) params.append("hotel_id", hotelIdFromURL);
+  if (filterStart && filterStart.value) params.append("start", filterStart.value);
+  if (filterEnd && filterEnd.value) params.append("end", filterEnd.value);
+  if (filterCapacity && filterCapacity.value) params.append("capacity", filterCapacity.value);
+  if (filterView && filterView.value) params.append("area", filterView.value);
+  if (filterPrice && filterPrice.value) params.append("price", filterPrice.value);
 
-  const res = await fetch(`${apiUrl}?${params.toString()}`);
-  const rooms = await res.json();
-  renderTable(rooms);
+  try {
+    const res = await fetch(`${apiUrl}?${params.toString()}`);
+    const rooms = await res.json();
+    renderTable(rooms);
+  } catch (err) {
+    console.error("Error fetching rooms:", err);
+  }
 }
 
 function renderTable(rooms) {
-  rooms.sort((a, b) => a.hotel_id - b.hotel_id || a.room_number - b.room_number);
   roomTableBody.innerHTML = "";
   rooms.forEach((r) => {
     const row = document.createElement("tr");
     row.innerHTML = `
-      <td>${r.room_ID}</td>
+      <td>${r.room_id}</td>
       <td>${r.hotel_id}</td>
       <td>${r.room_number}</td>
       <td>${r.capacity}</td>
       <td>${r.views}</td>
       <td>${r.price}</td>
       <td>${r.extendable ? "Yes" : "No"}</td>
-      <td>${r.damages || ""}</td>
-      <td><button onclick="openBookingModal(${r.room_ID})">Book</button></td>
+      <td>${r.damages || "None"}</td>
+      <td><button onclick="chooseRoom(${r.room_id})">Choose</button></td>
     `;
     roomTableBody.appendChild(row);
   });
 }
 
-[filterCapacity, filterView, filterHotel, filterChain, filterCategory, filterNumRooms, filterPrice, filterStartDate, filterEndDate].forEach(input => {
-  input.addEventListener("input", fetchAvailableRooms);
-});
-
-clearFiltersBtn.addEventListener("click", () => {
-  document.querySelectorAll(".filters input, .filters select").forEach((input) => (input.value = ""));
-  fetchAvailableRooms();
-});
-
-function openBookingModal(roomId) {
-  // Logic to open a modal where user can select start/end date and confirm booking
-  alert(`Booking flow for room ${roomId} coming soon...`);
+function chooseRoom(roomId) {
+  window.location.href = `bookingsC.html?room_ID=${roomId}`;
 }
 
-fetchAvailableRooms();
+async function fetchSummaryData() {
+  try {
+    const [capacityRes, areaRes] = await Promise.all([
+      fetch(hotelCapacityUrl),
+      fetch(roomsPerAreaUrl)
+    ]);
+
+    const capacities = await capacityRes.json();
+    const areas = await areaRes.json();
+
+    summaryContainer.innerHTML = `
+      <h3>Hotel Capacity Summary</h3>
+      <ul>
+        ${capacities.map(h => `<li>Hotel ${h.hotel_id} (${h.h_address}): ${h.total_capacity} people</li>`).join('')}
+      </ul>
+      <h3>Available Rooms Per Area</h3>
+      <ul>
+        ${areas.map(a => `<li>${a.area} (${a.hotel_address}): ${a.available_rooms} rooms</li>`).join('')}
+      </ul>
+    `;
+  } catch (err) {
+    console.error("Error fetching summary data:", err);
+  }
+}
+
+applyFiltersBtn.addEventListener("click", fetchRooms);
+
+clearFiltersBtn.addEventListener("click", () => {
+  filterStart.value = "";
+  filterEnd.value = "";
+  filterCapacity.value = "";
+  filterView.value = "";
+  filterPrice.value = "";
+  fetchRooms();
+});
+
+fetchRooms();
+fetchSummaryData();

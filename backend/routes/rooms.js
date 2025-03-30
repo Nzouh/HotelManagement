@@ -4,7 +4,6 @@ const db = require('../db.js');
 
 /**
  * GET /api/rooms
- * Basic route to fetch 10 rooms for testing
  */
 router.get('/', async (req, res) => {
     try {
@@ -26,35 +25,43 @@ router.get('/', async (req, res) => {
  * Example: /api/available-rooms?area=Sea&capacity=Double&price=200
  */
 router.get('/available', async (req, res) => {
-  const { area, capacity, price } = req.query;
+  const { area, capacity, price, start, end, hotel_id } = req.query;
+  console.log("Backend received hotel_id:", hotel_id);
 
-  // Start building query
   let baseQuery = `
-    SELECT * FROM Room r
-    LEFT JOIN Renting rent ON r.room_ID = rent.room_ID
-    WHERE rent.r_edate IS NULL OR CAST(rent.r_edate AS date) < CURRENT_DATE
+    SELECT r.* FROM Room r
+    WHERE r.room_ID NOT IN (
+      SELECT room_ID FROM Booking
+      WHERE NOT (
+        checkout < $1 OR checkin > $2
+      )
+    )
+    AND r.room_ID NOT IN (
+      SELECT room_ID FROM Renting
+      WHERE NOT (
+        r_edate < $1 OR r_sdate > $2
+      )
+    )
   `;
 
-  // Collect filters
-  const filters = [];
-  const values = [];
+  const values = [start || '1900-01-01', end || '3000-01-01'];
+  let i = values.length;
 
   if (area) {
-    filters.push(`r.views = $${filters.length + 1}`);
     values.push(area);
+    baseQuery += ` AND r.views = $${++i}`;
   }
   if (capacity) {
-    filters.push(`r.capacity = $${filters.length + 1}`);
     values.push(capacity);
+    baseQuery += ` AND r.capacity = $${++i}`;
   }
   if (price) {
-    filters.push(`r.price <= $${filters.length + 1}`);
     values.push(price);
+    baseQuery += ` AND r.price <= $${++i}`;
   }
-
-  // Add filters to base query if any
-  if (filters.length > 0) {
-    baseQuery += ' AND ' + filters.join(' AND ');
+  if (hotel_id) {
+    values.push(hotel_id);
+    baseQuery += ` AND r.hotel_id = $${++i}`;
   }
 
   try {
@@ -65,6 +72,8 @@ router.get('/available', async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+
+
 
 router.post('/', async (req, res) => {
   const { hotel_id, room_number, capacity, views, price, extendable, damages } = req.body;

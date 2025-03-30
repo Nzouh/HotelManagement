@@ -124,12 +124,76 @@ body {
     gap: 1rem;
     margin-bottom: 20px;
     flex-wrap: wrap;
+    align-items: flex-end;
   }
   
   .filters label {
     display: flex;
     flex-direction: column;
     font-size: 0.9rem;
+    min-width: 150px;
   }
   
+  .filters input,
+  .filters select {
+    padding: 6px;
+    font-size: 14px;
+    margin-top: 4px;
+  }
+  
+  .filters button {
+    padding: 8px 12px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  
+  .summary-box {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #f8f8f8;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  }
+  
+  .summary-box h3 {
+    margin-top: 0;
+  }
+  
+  .booking-container {
+    width: 350px;
+    margin: 50px auto;
+    padding: 2rem;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background: #fff;
+  }
+  .booking-container h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  .booking-container label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+  }
+  .booking-container input {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  .booking-container button {
+    width: 100%;
+    padding: 0.7rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  .booking-container button:hover {
+    background-color: #0056b3;
+  }
   
