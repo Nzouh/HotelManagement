@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hotels - Customer View</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav class="navbar">
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="hotelsC.html">Hotels</a></li>
+      <li><a href="roomsC.html">Rooms</a></li>
+    </ul>
+  </nav>
+
+  <div class="container">
+    <header>
+      <h1>Available Hotels</h1>
+      <input type="text" id="search-hotel" placeholder="Search by address or email..." />
+    </header>
+
+    <table id="hotel-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Address</th>
+          <th>Email</th>
+          <th># Rooms</th>
+          <th>Rating</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- JS will populate table -->
+      </tbody>
+    </table>
+  </div>
+
+  <script src="hotelsC.js"></script>
+</body>
+</html>
