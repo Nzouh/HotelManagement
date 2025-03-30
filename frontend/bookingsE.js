@@ -15,6 +15,7 @@ async function fetchBookings() {
   try {
     const res = await fetch(apiUrl);
     const bookings = await res.json();
+    console.log("Received bookings:", bookings);
     renderTable(bookings);
   } catch (err) {
     console.error("Failed to fetch bookings:", err);

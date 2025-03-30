@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rentings Management</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav class="navbar">
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="customers.html">Customers</a></li>
+      <li><a href="employees.html">Employees</a></li>
+      <li><a href="hotelsE.html">Hotels</a></li>
+      <li><a href="roomsE.html">Rooms</a></li>
+      <li><a href="bookingsE.html">Bookings</a></li>
+      <li><a href="rentings.html" class="active">Rentings</a></li>
+      <li><a href="archives.html">Archives</a></li>
+    </ul>
+  </nav>
+
+  <div class="container">
+    <header>
+      <h1>Rentings</h1>
+      <button id="add-renting-btn">+ Add Renting</button>
+    </header>
+
+    <table id="rentings-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Room ID</th>
+          <th>Customer SIN</th>
+          <th>Employee SIN</th>
+          <th>Start Date</th>
+          <th>End Date</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <!-- Modal for adding/editing renting -->
+  <div class="modal hidden" id="renting-modal">
+    <div class="modal-content">
+      <h2 id="modal-title">Add Renting</h2>
+      <form id="renting-form">
+        <input type="text" id="rent_id" placeholder="Renting ID" required />
+        <input type="text" id="room_ID" placeholder="Room ID" required />
+        <input type="text" id="c_sin" placeholder="Customer SIN" required />
+        <input type="text" id="e_sin" placeholder="Employee SIN" required />
+        <input type="date" id="r_sdate" placeholder="Start Date" required />
+        <input type="date" id="r_edate" placeholder="End Date" required />
+        <div class="modal-actions">
+          <button type="submit">Save</button>
+          <button type="button" id="cancel-btn">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="rentings.js"></script>
+</body>
+</html>
