@@ -31,7 +31,7 @@ router.post('/', async (req, res) => {
     res.status(201).json(rows[0]);
   } catch (err) {
     console.error('Error booking room:', err);
-    res.status(500).json({ error: 'Failed to book room' });
+    res.status(500).json({ error: err.detail || 'Failed to book room' });
   }
 });
 
@@ -45,7 +45,7 @@ router.get('/', async (req, res) => {
     res.json(rows);
   } catch (err) {
     console.error('Error fetching bookings:', err);
-    res.status(500).json({ error: 'Failed to fetch bookings' });
+    res.status(500).json({ error: err.detail || 'Failed to fetch bookings' });
   }
 });
 

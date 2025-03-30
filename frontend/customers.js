@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <td>${c.c_email}</td>
           <td>${c.c_address}</td>
           <td>${c.dor || ""}</td>
-          <td><button class="delete-btn" data-id="${c.c_sin}">❌</button></td>
+          <td><button class="delete-btn" data-id="${c.c_sin}">Delete</button></td>
         `;
         row.addEventListener("click", (e) => {
           if (!e.target.classList.contains("delete-btn")) {
@@ -64,7 +64,12 @@ document.addEventListener("DOMContentLoaded", () => {
             body: JSON.stringify(customerData),
           }
         );
-        if (!res.ok) throw new Error("Failed to save customer");
+        if (!res.ok) {
+            const errorData = await res.json(); // Get the error message from server
+            alert(errorData.error || "Failed to save customer");
+            throw new Error(errorData.error || "Failed to save customer");
+          }
+          
         customerFormModal.classList.add("hidden");
         await fetchCustomers();
       } catch (err) {

@@ -28,7 +28,7 @@ function renderTable(employees) {
       <td>${e.e_name}</td>
       <td>${e.e_address}</td>
       <td>${e.pos || ""}</td>
-      <td><button class="delete-btn" data-id="${e.e_sin}">❌</button></td>
+      <td><button class="delete-btn" data-id="${e.e_sin}">Delete</button></td>
     `;
     row.addEventListener("click", (event) => {
       if (!event.target.classList.contains("delete-btn")) {
@@ -65,8 +65,12 @@ employeeForm.addEventListener("submit", async (e) => {
         body: JSON.stringify(employeeData),
       }
     );
-    if (!res.ok) throw new Error("Failed to save employee");
-    employeeModal.classList.add("hidden");
+    if (!res.ok) {
+        const errorData = await res.json(); // Get the error message from server
+        alert(errorData.error || "Failed to save Employee");
+        throw new Error(errorData.error || "Failed to save Employee");
+      }
+          employeeModal.classList.add("hidden");
     await fetchEmployees();
   } catch (err) {
     alert("Error saving employee.");

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Employee Hotel Management</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav class="navbar">
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="customers.html">Customers</a></li>
+      <li><a href="employees.html">Employees</a></li>
+      <li><a href="hotelsE.html">Hotels (Employee)</a></li>
+      <li><a href="hotelsC.html">Hotels (Customer)</a></li>
+      <li><a href="rooms.html">Rooms</a></li>
+      <li><a href="bookings.html">Bookings</a></li>
+      <li><a href="rentings.html">Rentings</a></li>
+      <li><a href="archives.html">Archives</a></li>
+    </ul>
+  </nav>
+
+  <div class="container">
+    <header>
+      <h1>Hotel Management (Employee)</h1>
+      <button id="add-hotel-btn">+ Add Hotel</button>
+      <input type="text" id="search-hotel" placeholder="Search hotels..." />
+    </header>
+
+    <table id="hotel-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Chain ID</th>
+          <th>Address</th>
+          <th>Email</th>
+          <th>Rooms</th>
+          <th>Rating</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Filled dynamically -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Modal for Add/Edit -->
+  <div class="modal hidden" id="hotel-modal">
+    <div class="modal-content">
+      <h2 id="modal-title">Add Hotel</h2>
+      <form id="hotel-form">
+        <input type="number" id="hotel_id" name="hotel_id" placeholder="Hotel ID" required />
+        <input type="number" id="chain_id" name="chain_id" placeholder="Chain ID" required />
+        <input type="text" id="h_address" name="h_address" placeholder="Address" required />
+        <input type="email" id="h_email" name="h_email" placeholder="Email" required />
+        <input type="number" id="number_rooms" name="number_rooms" placeholder="Number of Rooms" required />
+        <input type="number" step="0.1" id="rating" name="rating" placeholder="Rating" required />
+        <div class="modal-actions">
+          <button type="submit">Save</button>
+          <button type="button" id="cancel-btn">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="hotelsE.js"></script>
+</body>
+</html>

@@ -11,6 +11,9 @@ const rentingRoutes = require('./routes/rentings.js');
 const customerRoutes = require('./routes/customers.js');
 const employeeRoutes = require('./routes/employees.js');
 const archiveRoutes = require('./routes/archives.js');
+const paymentRoutes = require('./routes/payments.js');
+const hotelCapacityRoutes = require('./routes/hotelCapacity.js');
+
 
 const app = express();
 app.use(cors());
@@ -24,6 +27,8 @@ app.use('/api/rentings', rentingRoutes);
 app.use('/api/customers', customerRoutes);
 app.use('/api/employees', employeeRoutes);
 app.use('/api/archives', archiveRoutes);
+app.use('/api/payments', paymentRoutes);
+app.use('/api/hotel-capacity', hotelCapacityRoutes);
 
 const PORT = 3002;
 app.listen(PORT, () => {

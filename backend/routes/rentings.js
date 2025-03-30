@@ -23,7 +23,7 @@ router.post('/', async (req, res) => {
     res.status(201).json(rows[0]);
   } catch (err) {
     console.error('Error creating renting:', err);
-    res.status(500).json({ error: 'Failed to create renting' });
+    res.status(500).json({ error: err.detail || 'Failed to create renting' });
   }
 });
 
@@ -33,7 +33,7 @@ router.get('/', async (req, res) => {
       res.json(rows);
     } catch (err) {
       console.error('Error fetching rentings:', err);
-      res.status(500).json({ error: 'Failed to fetch rentings' });
+      res.status(500).json({ error: err.detail || 'Failed to fetch rentings' });
     }
   });
   

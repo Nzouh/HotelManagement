@@ -25,7 +25,7 @@ router.post('/', async (req, res) => {
     res.status(201).json(rows[0]);
   } catch (err) {
     console.error('Error archiving:', err);
-    res.status(500).json({ error: 'Failed to archive record' });
+    res.status(500).json({ error: err.detail || 'Failed to archive record' });
   }
 });
 
@@ -39,7 +39,7 @@ router.get('/', async (req, res) => {
     res.json(rows);
   } catch (err) {
     console.error('Error fetching archive history:', err);
-    res.status(500).json({ error: 'Failed to fetch archive history' });
+    res.status(500).json({error: 'Failed to fetch archive history'});
   }
 });
 

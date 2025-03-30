@@ -25,7 +25,7 @@ router.post('/', async (req, res) => {
     res.status(201).json(rows[0]);
   } catch (err) {
     console.error('Error inserting employee:', err);
-    res.status(500).json({ error: 'Failed to insert employee' });
+    res.status(500).json({ error: err.detail || 'Failed to insert employee' });
   }
 });
 
@@ -72,7 +72,7 @@ router.get('/', async (req, res) => {
       res.sendStatus(204);
     } catch (err) {
       console.error('Error deleting employee:', err);
-      res.status(500).json({ error: 'Failed to delete employee' });
+      res.status(500).json({ error: err.detail || 'Failed to delete employee' });
     }
   });
 

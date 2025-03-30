@@ -22,7 +22,7 @@ router.post('/', async (req, res) => {
       res.status(201).json(result.rows[0]);
     } catch (err) {
       console.error('Error inserting customer:', err);
-      res.status(500).json({ error: 'Failed to insert customer' });
+      res.status(500).json({ error: err.detail || 'Failed to insert customer' });
     }
   });
 
@@ -80,7 +80,7 @@ router.delete('/:c_sin', async (req, res) => {
       res.status(200).json(rows[0]);
     } catch (err) {
       console.error('Error updating customer:', err);
-      res.status(500).json({ error: 'Failed to update customer' });
+      res.status(500).json({ error: err.detail ||'Failed to update customer' });
     }
   });
 
