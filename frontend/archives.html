@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Hotels - Customer View</title>
+  <title>Archives</title>
   <link rel="stylesheet" href="style.css" />
   <style>
     /* Basic styling for the navbar and integrated links */
@@ -90,7 +90,6 @@
     const employeeLinks = `
       <ul>
         <li><a href="index.html">Home</a></li>
-        <li><a href="customers.html">Customers</a></li>
         <li><a href="hotelsE.html">Hotels</a></li>
         <li><a href="roomsE.html">Rooms</a></li>
         <li><a href="bookingsE.html">Bookings</a></li>
@@ -125,33 +124,33 @@
     
     // Set a default view on page load (e.g., Administrator view).
     window.onload = () => {
-      setDashboard('customer');
+      setDashboard('admin');
     };
   </script>
 
   <div class="container">
     <header>
-      <h1>Available Hotels</h1>
-      <input type="text" id="search-hotel" placeholder="Search by address or email..." />
+      <h1>Archived Bookings & Rentings</h1>
     </header>
 
-    <table id="hotel-table">
+    <table id="archives-table">
       <thead>
         <tr>
-          <th>ID</th>
-          <th>Address</th>
-          <th>Email</th>
-          <th># Rooms</th>
-          <th>Rating</th>
-          <th>Action</th>
+          <th>Archive ID</th>
+          <th>Booking ID</th>
+          <th>Renting ID</th>
+          <th>Customer SIN</th>
+          <th>Employee SIN</th>
+          <th>Chain ID</th>
+          <th>Date Archived</th>
         </tr>
       </thead>
       <tbody>
-        <!-- JS will populate table -->
+        <!-- JS will populate rows here -->
       </tbody>
     </table>
   </div>
 
-  <script src="hotelsC.js"></script>
+  <script src="archives.js"></script>
 </body>
 </html>

@@ -4,6 +4,7 @@ const db = require('../db.js');
 
 
 // POST /api/rentings
+// POST /api/rentings
 router.post('/', async (req, res) => {
     const { rent_id, r_sdate, r_edate, e_sin, c_sin, room_ID } = req.body;
   
@@ -18,62 +19,78 @@ router.post('/', async (req, res) => {
         RETURNING *;
       `, [rent_id, r_sdate, r_edate, e_sin, c_sin, room_ID]);
   
-      res.status(201).json(insertRes.rows[0]);
+      const renting = insertRes.rows[0];
+  
+      // Automatically insert into Archives
+      const todayDate = new Date().toISOString().split("T")[0];
+      await db.query(`
+        INSERT INTO Archives (arch_id, rent_id, booking_id, c_sin, e_sin, chain_id, arch_date)
+        VALUES ($1, $1, NULL, $2, $3, $4, $5)
+      `, [rent_id, c_sin, e_sin, 1, todayDate]);
+  
+      res.status(201).json(renting);
     } catch (err) {
       console.error("Error adding renting:", err);
       res.status(500).json({ error: err.message || "Failed to add renting" });
     }
   });
   
+  
+  
 // POST /api/rentings/from-booking
+// POST /api/rentings
 router.post('/from-booking', async (req, res) => {
-  const { booking_id, e_sin } = req.body;
-
-  if (!booking_id || !e_sin) {
-    return res.status(400).json({ error: "Missing booking_id or e_sin" });
-  }
-
-  try {
-    const bookingRes = await db.query(
-      "SELECT * FROM Booking WHERE booking_id = $1",
-      [booking_id]
-    );
-
-    if (bookingRes.rows.length === 0) {
-      return res.status(404).json({ error: "Booking not found" });
+    const { booking_id, e_sin } = req.body;
+  
+    if (!booking_id || !e_sin) {
+      return res.status(400).json({ error: "Missing booking_id or e_sin" });
     }
+  
+    try {
+      const bookingRes = await db.query(
+        "SELECT * FROM Booking WHERE booking_id = $1",
+        [booking_id]
+      );
+  
+      if (bookingRes.rows.length === 0) {
+        return res.status(404).json({ error: "Booking not found" });
+      }
+  
+      const booking = bookingRes.rows[0];
+  
+      const insertRenting = await db.query(`
+        INSERT INTO Renting (rent_id, r_sdate, r_edate, e_sin, c_sin, room_ID)
+        VALUES ($1, $2, $3, $4, $5, $6)
+        RETURNING rent_id;
+      `, [
+        booking.booking_id,
+        booking.checkin,
+        booking.checkout,
+        e_sin,
+        booking.c_sin,
+        booking.room_id
+      ]);
+  
+      const rent_id = insertRenting.rows[0].rent_id;
+  
+      const todayDate = new Date().toISOString().split('T')[0];
+  
+      await db.query(
+        `INSERT INTO Archives (arch_id, rent_id, booking_id, c_sin, e_sin, chain_id, arch_date)
+         VALUES ($1, $1, $2, $3, $4, $5, $6);`,
+        [rent_id, booking.booking_id, booking.c_sin, e_sin, 1, todayDate]
+      );
+  
+      res.status(201).json({ message: "Booking transferred to Renting successfully!" });
+    } catch (err) {
+      console.error("Error transferring booking to renting:", err);
+      res.status(500).json({ error: err.message || "Internal server error" });
+    }
+  });
+  
+ 
 
-    const booking = bookingRes.rows[0];
-
-    const insertRenting = await db.query(`
-      INSERT INTO Renting (rent_id, r_sdate, r_edate, e_sin, c_sin, room_ID)
-      VALUES ($1, $2, $3, $4, $5, $6)
-      RETURNING rent_id;
-    `, [
-      booking.booking_id,
-      booking.checkin,
-      booking.checkout,
-      e_sin,
-      booking.c_sin,
-      booking.room_id
-    ]);
-
-    const rent_id = insertRenting.rows[0].rent_id;
-
-    const todayDate = new Date().toISOString().split('T')[0];
-
-    await db.query(
-      `INSERT INTO Archives (arch_id, rent_id, booking_id, c_sin, e_sin, chain_id, arch_date)
-       VALUES ($1, $1, $2, $3, $4, $5, $6);`,
-      [rent_id, booking.booking_id, booking.c_sin, e_sin, 1, todayDate] // TODO: dynamically set chain_id
-    );
-
-    res.status(201).json({ message: "Booking transferred to Renting successfully!" });
-  } catch (err) {
-    console.error("Error transferring booking to renting:", err);
-    res.status(500).json({ error: err.message || "Internal server error" });
-  }
-});
+  
 
 // GET /api/rentings
 router.get('/', async (req, res) => {

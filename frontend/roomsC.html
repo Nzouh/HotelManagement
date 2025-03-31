@@ -5,20 +5,129 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Available Rooms</title>
   <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Basic styling for the navbar and integrated links */
+    .navbar {
+      background-color: #333;
+      padding: 10px;
+      text-align: center;
+      position: relative;
+    }
+    /* Role buttons */
+    .role-buttons {
+      margin-bottom: 10px;
+    }
+    .role-buttons button {
+      margin: 0 10px;
+      padding: 10px 20px;
+      color: white;
+      background-color: #555;
+      border: none;
+      cursor: pointer;
+    }
+    .role-buttons button:hover {
+      background-color: #777;
+    }
+    /* Container for dynamic navigation links within the navbar */
+    #dashboard-links {
+      background-color: #444;
+      padding: 5px 0;
+      border-top: 1px solid #555;
+      display: inline-block;
+    }
+    #dashboard-links ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    #dashboard-links ul li {
+      margin: 0 5px;
+    }
+    #dashboard-links ul li a {
+      text-decoration: none;
+      color: #fff;
+      padding: 8px 15px;
+      border: 1px solid transparent;
+      transition: background-color 0.3s, border-color 0.3s;
+    }
+    #dashboard-links ul li a:hover {
+      background-color: #f4f4f4;
+      color: #333;
+      border-color: #ddd;
+    }
+  </style>
 </head>
 <body>
-  <nav class="navbar">
-    <ul>
-      <li><a href="index.html">Home</a></li>
-      <li><a href="customers.html">Customers</a></li>
-      <li><a href="employees.html">Employees</a></li>
-      <li><a href="hotelsC.html">Hotels</a></li>
-      <li><a href="roomsC.html">Rooms</a></li>
-      <li><a href="bookingsE.html">Bookings</a></li>
-      <li><a href="rentings.html">Rentings</a></li>
-      <li><a href="archives.html">Archives</a></li>
-    </ul>
-  </nav>
+    <nav class="navbar">
+        <div class="role-buttons">
+          <button id="btnAdmin">Administrator</button>
+          <button id="btnEmployee">Employee</button>
+          <button id="btnCustomer">Customer</button>
+        </div>
+        <div id="dashboard-links">
+          <!-- Dynamic links will be inserted here -->
+        </div>
+      </nav>
+  <!-- Employee Navigation Bar -->
+  <script>
+    // Define the link sets for each role using template literals.
+    const adminLinks = `
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="customers.html">Customers</a></li>
+        <li><a href="employees.html">Employees</a></li>
+        <li><a href="hotelsE.html">Hotels</a></li>
+        <li><a href="roomsE.html">Rooms</a></li>
+        <li><a href="bookingsE.html">Bookings</a></li>
+        <li><a href="rentings.html">Rentings</a></li>
+        <li><a href="archives.html">Archives</a></li>
+      </ul>
+    `;
+    
+    const employeeLinks = `
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="customers.html">Customers</a></li>
+        <li><a href="hotelsE.html">Hotels</a></li>
+        <li><a href="roomsE.html">Rooms</a></li>
+        <li><a href="bookingsE.html">Bookings</a></li>
+        <li><a href="rentings.html">Rentings</a></li>
+        <li><a href="archives.html">Archives</a></li>
+      </ul>
+    `;
+    
+    const customerLinks = `
+      <ul>
+        <li><a href="hotelsC.html">Hotels</a></li>
+        <li><a href="roomsC.html">Rooms</a></li>
+      </ul>
+    `;
+    
+    // Function to update the navigation based on the selected role.
+    function setDashboard(role) {
+      const container = document.getElementById('dashboard-links');
+      if (role === 'admin') {
+        container.innerHTML = adminLinks;
+      } else if (role === 'employee') {
+        container.innerHTML = employeeLinks;
+      } else if (role === 'customer') {
+        container.innerHTML = customerLinks;
+      }
+    }
+    
+    // Attach event listeners to the buttons.
+    document.getElementById('btnAdmin').addEventListener('click', () => setDashboard('admin'));
+    document.getElementById('btnEmployee').addEventListener('click', () => setDashboard('employee'));
+    document.getElementById('btnCustomer').addEventListener('click', () => setDashboard('customer'));
+    
+    // Set a default view on page load (e.g., Administrator view).
+    window.onload = () => {
+      setDashboard('customer');
+    };
+  </script>
 
   <div class="container">
     <header>
